@@ -1,0 +1,11 @@
+<h1>todos</h1>
+{% if completed is not none %}
+<input hx-trigger="keyup[keyCode==13]" name="description" hx-target="#todos" hx-post="/tasks?completed={{completed}}"
+    type="text" class="new-todo" placeholder="What needs to be done?">
+{% elif not start %}
+    <input hx-trigger="keyup[keyCode==13]" name="description" hx-target="#todos" hx-post="/tasks" type="text"
+    class="new-todo" placeholder="What needs to be done?">
+{% else %}
+<input hx-trigger="keyup[keyCode==13]" name="description" hx-target="#todos" hx-post="/tasks" type="text"
+    class="new-todo" placeholder="What needs to be done?" autofocus>
+{% endif %}

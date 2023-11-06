@@ -315,6 +315,7 @@ body {
 	text-decoration: none;
 	border: 1px solid transparent;
 	border-radius: 3px;
+	cursor: pointer;
 }
 
 .filters li a:hover {
@@ -390,4 +391,8 @@ html .clear-completed:active {
 .toggle-all:focus + label {
 	box-shadow: 0 0 2px 2px #CF7D7D;
 	outline: 0;
+}
+
+a {
+	cursor: pointer;
 }

@@ -1,0 +1,31 @@
+<span class="todo-count"><strong>{{ items_left }}</strong>
+    items left</span>
+
+<ul class="filters">
+    <li>
+        {% if all_selected %}
+        <a hx-get="/tasks" hx-trigger="click" hx-target="#todos" class="selected">All</a>
+        {% else %}
+        <a hx-get="/tasks" hx-trigger="click" hx-target="#todos">All</a>
+        {% endif %}
+    </li>
+    <li>
+        {% if active_selected %}
+        <a hx-get="/tasks?completed=false" hx-trigger="click" hx-target="#todos" class="selected">Active</a>
+        {% else %}
+        <a hx-get="/tasks?completed=false" hx-trigger="click" hx-target="#todos">Active</a>
+        {% endif %}
+    </li>
+    <li>
+        {% if completed_selected %}
+        <a hx-get="/tasks?completed=true" hx-trigger="click" hx-target="#todos" class="selected">Completed</a>
+        {% else %}
+        <a hx-get="/tasks?completed=true" hx-trigger="click" hx-target="#todos">Completed</a>
+        {% endif %}
+    </li>
+</ul>
+<!-- Hidden if no completed items are left ↓ -->
+
+{% if completed_tasks %}
+<button class="clear-completed" hx-post="/tasks/clear" hx-target="#todos">Clear completed</button>
+{% endif %}

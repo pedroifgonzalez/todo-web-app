@@ -1,0 +1,39 @@
+{% if completed is not none %}
+<ul class="todo-list" id="todos" hx-get="/status?completed={{completed}}" hx-trigger="load delay:5ms"
+    hx-target=".footer">
+    <div hx-get="/header?completed={{completed}}" hx-trigger="load delay:5ms" hx-target=".header"></div>
+    {% elif start %}
+    <ul class="todo-list" id="todos">
+    {% else %}
+    <ul class="todo-list" id="todos" hx-get="/status" hx-trigger="load delay:5ms" hx-target=".footer"></ul>
+    <div hx-get="/header" hx-trigger="load delay:5ms" hx-target=".header"></div>
+    {% endif %}
+    {% for task in tasks %}
+    {% if task.completed %}
+    <li class="completed">
+        <div class="view">
+            <input class="toggle" type="checkbox" checked>
+            <label>{{ task.description }}</label>
+            {% if completed is not none %}
+            <button hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos" class="destroy"></button>
+            {% else %}
+            <button hx-delete="/task/{{ task.id }}" hx-target="#todos" class="destroy"></button>
+            {% endif %}
+        </div>
+    </li>
+    {% else %}
+    <li>
+        <div class="view">
+            <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}" hx-target="#todos">
+            <label>{{ task.description }}</label>
+            {% if completed is not none %}
+            <button hx-trigger="click" hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos"
+                class="destroy"></button>
+            {% else %}
+            <button hx-trigger="click" hx-delete="/task/{{ task.id }}" hx-target="#todos" class="destroy"></button>
+            {% endif %}
+        </div>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
