@@ -1,3 +1,4 @@
+from fastapi_injector import Injected
 from models.task_mdl import Task
 from orm.mappings import ORMBase
 from repositories.tasks_repo import BaseTasksRepository
@@ -6,7 +7,9 @@ from repositories.tasks_repo import BaseTasksRepository
 class UpdateTaskDescriptionService:
     """Service for deleting task"""
 
-    def __init__(self, task_repository: BaseTasksRepository, orm: ORMBase) -> None:
+    def __init__(
+        self, task_repository: BaseTasksRepository = Injected(BaseTasksRepository), orm: ORMBase = Injected(ORMBase)
+    ) -> None:
         self.task_repository = task_repository
         self.orm = orm
 

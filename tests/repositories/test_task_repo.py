@@ -9,6 +9,7 @@ from services.tasks.get_completed_tasks_srv import GetCompletedTasksService
 from services.tasks.get_not_completed_tasks_srv import GetNotCompletedTasksService
 from services.tasks.get_tasks_srv import GetTasksService
 from services.tasks.mark_task_as_completed_srv import MarkTaskAsCompletedService
+from services.tasks.mark_task_as_not_completed_srv import MarkTaskAsNotCompletedService
 from services.tasks.update_task_description_srv import UpdateTaskDescriptionService
 
 
@@ -139,3 +140,19 @@ def test_mark_task_as_completed_service(test_db_session, repository):
     # assert
     tasks_rows = test_db_session.query(SQLAlchemyTask).filter_by(completed=True).all()
     assert len(tasks_rows) == 2
+
+
+def test_mark_task_as_not_completed_service(test_db_session, repository):
+    """Assert MarkTaskAsNotCompletedService behaviour"""
+    # arrange
+    test_db_session.add(SQLAlchemyTask(description='This is another test task 11', id=1, completed=True))
+    test_db_session.add(SQLAlchemyTask(description='This is another test task no 12', id=2, completed=True))
+    test_db_session.commit()
+
+    # act
+    mark_task_as_not_completed_service = MarkTaskAsNotCompletedService(task_repository=repository)
+    mark_task_as_not_completed_service.execute(task_id=2)
+
+    # assert
+    tasks_rows = test_db_session.query(SQLAlchemyTask).filter_by(completed=True).all()
+    assert len(tasks_rows) == 1

@@ -37,6 +37,14 @@ class SQLAlchemyTaskRepository(BaseTasksRepository):
         self.session.commit()
         return True
 
+    def mark_task_as_not_completed(self, task_id: Any):
+        """Mark a task as not completed"""
+        self.session.query(SQLAlchemyTask).filter(SQLAlchemyTask.id == task_id).update(
+            {SQLAlchemyTask.completed: False}
+        )
+        self.session.commit()
+        return True
+
     def get_completed_tasks(self):
         """Get all completed tasks"""
         return self.session.query(SQLAlchemyTask).filter(SQLAlchemyTask.completed).all()

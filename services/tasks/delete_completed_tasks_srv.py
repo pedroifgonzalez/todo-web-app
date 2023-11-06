@@ -3,8 +3,8 @@ from orm.mappings import ORMBase
 from repositories.tasks_repo import BaseTasksRepository
 
 
-class GetTasksService:
-    """Get tasks service"""
+class DeleteCompletedTasksService:
+    """Delete completed tasks service"""
 
     def __init__(
         self, task_repository: BaseTasksRepository = Injected(BaseTasksRepository), orm: ORMBase = Injected(ORMBase)
@@ -15,5 +15,11 @@ class GetTasksService:
     def execute(self):
         """Service execution operations"""
         schema_tasks = self.task_repository.get_tasks()
-        tasks = [self.orm.to_task_model(schema_task=schema_task) for schema_task in schema_tasks]
-        return tasks
+        tasks = [
+            self.orm.to_task_model(schema_task=schema_task)
+            for schema_task in schema_tasks
+            if schema_task.completed is True
+        ]
+        for task in tasks:
+            self.task_repository.delete_task(task_id=task.id)
+        return True

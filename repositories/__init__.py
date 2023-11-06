@@ -36,6 +36,11 @@ class BaseTasksRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
+    def mark_task_as_not_completed(self, task_id: Any):
+        """Mark a task as not completed"""
+        raise NotImplementedError()
+
+    @abstractmethod
     def get_completed_tasks(self):
         """Get all completed tasks"""
         raise NotImplementedError()

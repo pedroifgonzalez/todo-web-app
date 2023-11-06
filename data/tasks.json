@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "description": "Study htmx",
+        "completed": true
+    },
+    {
+        "id": 2,
+        "description": "Go to Japan",
+        "completed": false
+    }
+]
