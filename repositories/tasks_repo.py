@@ -37,11 +37,23 @@ class SQLAlchemyTaskRepository(BaseTasksRepository):
         self.session.commit()
         return True
 
+    def mark_tasks_as_completed(self):
+        """Mark all tasks as completed"""
+        self.session.query(SQLAlchemyTask).update({SQLAlchemyTask.completed: True})
+        self.session.commit()
+        return True
+
     def mark_task_as_not_completed(self, task_id: Any):
         """Mark a task as not completed"""
         self.session.query(SQLAlchemyTask).filter(SQLAlchemyTask.id == task_id).update(
             {SQLAlchemyTask.completed: False}
         )
+        self.session.commit()
+        return True
+
+    def mark_tasks_as_not_completed(self):
+        """Mark all task as not completed"""
+        self.session.query(SQLAlchemyTask).update({SQLAlchemyTask.completed: False})
         self.session.commit()
         return True
 

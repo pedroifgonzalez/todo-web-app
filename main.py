@@ -1,4 +1,5 @@
 import json
+from typing import Annotated
 from typing import Any
 
 import sqlalchemy
@@ -7,26 +8,27 @@ from db.sqlalchemy_database import engine
 from db.sqlalchemy_database import SessionLocal
 from fastapi import Depends
 from fastapi import FastAPI
+from fastapi import Form
 from fastapi import Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi_injector import attach_injector
 from injector import Injector
 from injector import singleton
-from fastapi import Form
-from orm import mappings
-from typing import Annotated
-from repositories import tasks_repo
 from models.task_mdl import Task
+from orm import mappings
+from repositories import tasks_repo
 from schema.task_sch import SQLAlchemyTask
 from services.tasks.add_task_srv import AddTaskService
+from services.tasks.delete_completed_tasks_srv import DeleteCompletedTasksService
 from services.tasks.delete_task_srv import DeleteTaskService
 from services.tasks.get_completed_tasks_srv import GetCompletedTasksService
 from services.tasks.get_not_completed_tasks_srv import GetNotCompletedTasksService
 from services.tasks.get_tasks_srv import GetTasksService
-from services.tasks.delete_completed_tasks_srv import DeleteCompletedTasksService
 from services.tasks.mark_task_as_completed_srv import MarkTaskAsCompletedService
 from services.tasks.mark_task_as_not_completed_srv import MarkTaskAsNotCompletedService
+from services.tasks.mark_tasks_as_completed_srv import MarkTasksAsCompletedService
+from services.tasks.mark_tasks_as_not_completed_srv import MarkTasksAsNotCompletedService
 
 
 templates = Jinja2Templates(directory="templates")
@@ -183,7 +185,6 @@ def mark_task_as_completed(
     get_completed_tasks_service: GetCompletedTasksService = Depends(),
     get_not_completed_tasks_service: GetNotCompletedTasksService = Depends(),
     mark_task_as_completed_service: MarkTaskAsCompletedService = Depends(),
-    mark_task_as_not_completed_service: MarkTaskAsNotCompletedService = Depends(),
 ):
     """Mark a task as completed"""
     mark_task_as_completed_service.execute(task_id=task_id)
@@ -257,4 +258,30 @@ def get_header(request: Request, completed: bool = None):
             "request": request,
             "completed": completed,
         },
+    )
+
+
+@app.post('/tasks/toggle')
+def toggle_all_tasks(
+    request: Request,
+    completed: bool = None,
+    get_tasks_service: GetTasksService = Depends(),
+    get_completed_tasks_service: GetCompletedTasksService = Depends(),
+    get_not_completed_tasks_service: GetNotCompletedTasksService = Depends(),
+    mark_tasks_as_not_completed_service: MarkTasksAsNotCompletedService = Depends(),
+    mark_tasks_as_completed_service: MarkTasksAsCompletedService = Depends(),
+):
+    tasks = get_tasks_service.execute()
+    complete_tasks = [task for task in tasks if task.completed is True]
+    if len(complete_tasks) == len(tasks):
+        mark_tasks_as_not_completed_service.execute()
+    else:
+        mark_tasks_as_completed_service.execute()
+
+    return get_tasks(
+        request=request,
+        completed=completed,
+        get_tasks_service=get_tasks_service,
+        get_completed_tasks_service=get_completed_tasks_service,
+        get_not_completed_tasks_service=get_not_completed_tasks_service,
     )

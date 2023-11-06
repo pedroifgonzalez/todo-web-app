@@ -1,3 +1,5 @@
+<input id="toggle-all" class="toggle-all" type="checkbox" hx-post="/tasks/toggle" hx-target="#todos">
+<label for="toggle-all">Mark all as complete</label>
 {% if completed is not none %}
 <ul class="todo-list" id="todos" hx-get="/status?completed={{completed}}" hx-trigger="load delay:5ms"
     hx-target=".footer">
