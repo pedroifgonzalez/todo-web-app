@@ -1,21 +1,28 @@
+{% if data is not none %}
 <input id="toggle-all" class="toggle-all" type="checkbox" hx-post="/tasks/toggle" hx-target="#todos">
 <label for="toggle-all">Mark all as complete</label>
+{% endif %}
 {% if completed is not none %}
+<div hx-get="/header?completed={{completed}}" hx-trigger="load delay:5ms" hx-target=".header"></div>
 <ul class="todo-list" id="todos" hx-get="/status?completed={{completed}}" hx-trigger="load delay:5ms"
-    hx-target=".footer">
-    <div hx-get="/header?completed={{completed}}" hx-trigger="load delay:5ms" hx-target=".header"></div>
+    hx-target=".footer" hx-swap="outerHTML">
     {% elif start %}
     <ul class="todo-list" id="todos">
         {% else %}
-        <ul class="todo-list" id="todos" hx-get="/status" hx-trigger="load delay:5ms" hx-target=".footer"></ul>
         <div hx-get="/header" hx-trigger="load delay:5ms" hx-target=".header"></div>
+        <ul class="todo-list" id="todos" hx-get="/status" hx-trigger="load delay:5ms" hx-target=".footer" hx-swap="outerHTML"></ul>
         {% endif %}
         {% for task in tasks %}
         {% if task.completed %}
         <li class="completed">
             <div class="view">
+                {% if completed is not none %}
+                <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/uncomplete?completed={{completed}}" hx-target="#todos"
+                checked>
+                {% else %}
                 <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/uncomplete" hx-target="#todos"
                     checked>
+                {% endif %}
                 <label>{{ task.description }}</label>
                 {% if completed is not none %}
                 <button hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos"
@@ -28,7 +35,11 @@
         {% else %}
         <li>
             <div class="view">
+                {% if completed is not none %}
+                <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/complete?completed={{completed}}" hx-target="#todos">
+                {% else %}
                 <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/complete" hx-target="#todos">
+                {% endif %}
                 <label>{{ task.description }}</label>
                 {% if completed is not none %}
                 <button hx-trigger="click" hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos"

@@ -1,3 +1,8 @@
+{% if tasks %}
+<footer class="footer">
+{% else %}
+<footer class="footer" style="display: none;">
+{% endif %}
 <span class="todo-count"><strong>{{ items_left }}</strong>
     items left</span>
 
@@ -29,3 +34,4 @@
 {% if completed_tasks %}
 <button class="clear-completed" hx-post="/tasks/clear" hx-target="#todos">Clear completed</button>
 {% endif %}
+</footer>

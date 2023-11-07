@@ -70,6 +70,7 @@ def home_page(request: Request, get_tasks_service: GetTasksService = Depends()):
     tasks = get_tasks_service.execute()
     items_left = len([task for task in tasks if task.completed is not True])
     completed_tasks = [task for task in tasks if task.completed is True]
+    data = get_tasks_service.execute() or None
 
     return templates.TemplateResponse(
         'index.html',
@@ -80,6 +81,7 @@ def home_page(request: Request, get_tasks_service: GetTasksService = Depends()):
             "start": True,
             "completed": None,
             "completed_tasks": True if completed_tasks else False,
+            "data": data,
         },
     )
 
@@ -93,6 +95,7 @@ def get_tasks(
     get_tasks_service: GetTasksService = Depends(),
 ):
     """Get all tasks"""
+    data = get_tasks_service.execute() or None
     if completed:
         tasks = get_completed_tasks_service.execute()
     elif completed is False:
@@ -109,6 +112,7 @@ def get_tasks(
             "tasks": tasks,
             "items_left": items_left,
             "completed": completed,
+            "data": data,
         },
     )
 
@@ -245,6 +249,7 @@ def get_status(request: Request, completed: bool = None, get_tasks_service: GetT
             'completed_selected': completed_selected,
             "items_left": items_left,
             "completed_tasks": True if completed_tasks else False,
+            "tasks": tasks,
         },
     )
 
