@@ -1,4 +1,4 @@
-"""Code related to a Task model properties and definition"""
+"""Task model properties and definition module"""
 
 from typing import Optional
 

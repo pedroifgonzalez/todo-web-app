@@ -1,3 +1,4 @@
+"""Deletion of a task service"""
 from typing import Any
 
 from fastapi_injector import Injected

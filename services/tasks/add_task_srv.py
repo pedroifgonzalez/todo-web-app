@@ -1,3 +1,4 @@
+"""Task addition service module"""
 from fastapi_injector import Injected
 from models.task_mdl import Task
 from orm.mappings import ORMBase

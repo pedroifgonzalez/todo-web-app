@@ -1,3 +1,5 @@
+"""Obtention of not completed tasks service"""
+
 from fastapi_injector import Injected
 from orm.mappings import ORMBase
 from repositories.tasks_repo import BaseTasksRepository

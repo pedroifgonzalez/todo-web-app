@@ -1,3 +1,4 @@
+"""Task completion service"""
 from typing import Any
 
 from fastapi_injector import Injected

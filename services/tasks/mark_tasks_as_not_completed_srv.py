@@ -1,3 +1,4 @@
+"""All tasks completion reversal service"""
 from fastapi_injector import Injected
 from repositories.tasks_repo import BaseTasksRepository
 
