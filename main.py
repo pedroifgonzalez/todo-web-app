@@ -3,6 +3,7 @@ from typing import Annotated
 from typing import Any
 
 import sqlalchemy
+import uvicorn
 from db.sqlalchemy_database import Base
 from db.sqlalchemy_database import engine
 from db.sqlalchemy_database import SessionLocal
@@ -324,3 +325,7 @@ def update_task_description(
             'task': task,
         },
     )
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='localhost', port=8000)
