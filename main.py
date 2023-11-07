@@ -31,9 +31,9 @@ from services.tasks.mark_tasks_as_completed_srv import MarkTasksAsCompletedServi
 from services.tasks.mark_tasks_as_not_completed_srv import MarkTasksAsNotCompletedService
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory='templates')
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 
 def load_initial_data():
@@ -64,7 +64,7 @@ setup_app()
 load_initial_data()
 
 
-@app.get("/")
+@app.get('/')
 def home_page(request: Request, get_tasks_service: GetTasksService = Depends()):
     """Home page route"""
     tasks = get_tasks_service.execute()
@@ -75,13 +75,13 @@ def home_page(request: Request, get_tasks_service: GetTasksService = Depends()):
     return templates.TemplateResponse(
         'index.html',
         {
-            "request": request,
-            "tasks": tasks,
-            "items_left": items_left,
-            "start": True,
-            "completed": None,
-            "completed_tasks": True if completed_tasks else False,
-            "data": data,
+            'request': request,
+            'tasks': tasks,
+            'items_left': items_left,
+            'start': True,
+            'completed': None,
+            'completed_tasks': True if completed_tasks else False,
+            'data': data,
         },
     )
 
@@ -108,11 +108,11 @@ def get_tasks(
     return templates.TemplateResponse(
         '/tasks.html',
         {
-            "request": request,
-            "tasks": tasks,
-            "items_left": items_left,
-            "completed": completed,
-            "data": data,
+            'request': request,
+            'tasks': tasks,
+            'items_left': items_left,
+            'completed': completed,
+            'data': data,
         },
     )
 
@@ -243,13 +243,13 @@ def get_status(request: Request, completed: bool = None, get_tasks_service: GetT
     return templates.TemplateResponse(
         '/footer.html',
         {
-            "request": request,
+            'request': request,
             'all_selected': all_selected,
             'active_selected': active_selected,
             'completed_selected': completed_selected,
-            "items_left": items_left,
-            "completed_tasks": True if completed_tasks else False,
-            "tasks": tasks,
+            'items_left': items_left,
+            'completed_tasks': True if completed_tasks else False,
+            'tasks': tasks,
         },
     )
 
@@ -260,8 +260,8 @@ def get_header(request: Request, completed: bool = None):
     return templates.TemplateResponse(
         '/header.html',
         {
-            "request": request,
-            "completed": completed,
+            'request': request,
+            'completed': completed,
         },
     )
 
