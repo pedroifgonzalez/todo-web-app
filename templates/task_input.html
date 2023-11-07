@@ -1,0 +1,2 @@
+<input hx-trigger="keyup[keyCode==13]" name="description" hx-target="this" hx-post="/tasks/{{ task.id }}" type="text" class="new-todo"
+    value="{{ task.description }}" hx-swap="outerHTML">

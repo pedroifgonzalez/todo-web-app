@@ -23,7 +23,7 @@
                 <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/uncomplete" hx-target="#todos"
                     checked>
                 {% endif %}
-                <label>{{ task.description }}</label>
+                {% include 'task_label.html' %}
                 {% if completed is not none %}
                 <button hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos"
                     class="destroy"></button>
@@ -40,7 +40,7 @@
                 {% else %}
                 <input class="toggle" type="checkbox" hx-put="/tasks/{{ task.id }}/complete" hx-target="#todos">
                 {% endif %}
-                <label>{{ task.description }}</label>
+                {% include 'task_label.html' %}
                 {% if completed is not none %}
                 <button hx-trigger="click" hx-delete="/task/{{ task.id }}?completed={{completed}}" hx-target="#todos"
                     class="destroy"></button>

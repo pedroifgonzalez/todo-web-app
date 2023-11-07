@@ -17,6 +17,9 @@ class SQLAlchemyTaskRepository(BaseTasksRepository):
         """Get all tasks"""
         return self.session.query(SQLAlchemyTask).all()
 
+    def get_task(self, task_id: Any):
+        return self.session.query(SQLAlchemyTask).filter(SQLAlchemyTask.id == task_id).first()
+
     def add_task(self, task: SQLAlchemyTask):
         """Add a new task"""
         self.session.add(task)

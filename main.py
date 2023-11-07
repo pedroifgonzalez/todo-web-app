@@ -24,11 +24,13 @@ from services.tasks.delete_completed_tasks_srv import DeleteCompletedTasksServic
 from services.tasks.delete_task_srv import DeleteTaskService
 from services.tasks.get_completed_tasks_srv import GetCompletedTasksService
 from services.tasks.get_not_completed_tasks_srv import GetNotCompletedTasksService
+from services.tasks.get_task_srv import GetTaskService
 from services.tasks.get_tasks_srv import GetTasksService
 from services.tasks.mark_task_as_completed_srv import MarkTaskAsCompletedService
 from services.tasks.mark_task_as_not_completed_srv import MarkTaskAsNotCompletedService
 from services.tasks.mark_tasks_as_completed_srv import MarkTasksAsCompletedService
 from services.tasks.mark_tasks_as_not_completed_srv import MarkTasksAsNotCompletedService
+from services.tasks.update_task_description_srv import UpdateTaskDescriptionService
 
 
 templates = Jinja2Templates(directory='templates')
@@ -290,4 +292,35 @@ def toggle_all_tasks(
         get_tasks_service=get_tasks_service,
         get_completed_tasks_service=get_completed_tasks_service,
         get_not_completed_tasks_service=get_not_completed_tasks_service,
+    )
+
+
+@app.get('/tasks/{task_id}')
+def get_task(request: Request, task_id: Any, get_task_service: GetTaskService = Depends()):
+    """Get a task"""
+    task = get_task_service.execute(task_id=task_id)
+    return templates.TemplateResponse(
+        '/task_input.html',
+        {
+            'request': request,
+            'task': task,
+        },
+    )
+
+
+@app.post('/tasks/{task_id}')
+def update_task_description(
+    request: Request,
+    task_id: Any,
+    description: Annotated[str, Form()],
+    update_task_service: UpdateTaskDescriptionService = Depends(),
+):
+    """Update a task description"""
+    task = update_task_service.execute(Task(id=task_id, description=description))
+    return templates.TemplateResponse(
+        '/task_label.html',
+        {
+            'request': request,
+            'task': task,
+        },
     )

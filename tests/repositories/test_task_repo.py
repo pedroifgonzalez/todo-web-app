@@ -7,6 +7,7 @@ from services.tasks.add_task_srv import AddTaskService
 from services.tasks.delete_task_srv import DeleteTaskService
 from services.tasks.get_completed_tasks_srv import GetCompletedTasksService
 from services.tasks.get_not_completed_tasks_srv import GetNotCompletedTasksService
+from services.tasks.get_task_srv import GetTaskService
 from services.tasks.get_tasks_srv import GetTasksService
 from services.tasks.mark_task_as_completed_srv import MarkTaskAsCompletedService
 from services.tasks.mark_task_as_not_completed_srv import MarkTaskAsNotCompletedService
@@ -55,6 +56,24 @@ def test_get_tasks_service(test_db_session, repository, orm):
 
     # assert
     assert len(tasks_rows) == 2
+
+
+def test_get_task_service(test_db_session, repository, orm):
+    """Assert GetTaskService behaviour"""
+    # arrange
+    test_db_session.add(SQLAlchemyTask(description='This is a test task no 1', id=1))
+    test_db_session.add(SQLAlchemyTask(description='This is a test task no 2', id=2))
+    test_db_session.commit()
+
+    # act
+    get_task_service = GetTaskService(task_repository=repository, orm=orm)
+    task_row = get_task_service.execute(task_id=1)
+
+    # assert
+    assert task_row
+    assert task_row.description == 'This is a test task no 1'
+    assert task_row.id == 1
+    assert task_row.completed is False
 
 
 def test_update_task_description_service(test_db_session, repository, orm):

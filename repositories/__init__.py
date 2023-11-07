@@ -16,6 +16,11 @@ class BaseTasksRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
+    def get_task(self, task_id: Any):
+        """Get a task"""
+        raise NotImplementedError()
+
+    @abstractmethod
     def update_task_description(self, task: Task):
         """Update a task description"""
         raise NotImplementedError()
