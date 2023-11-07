@@ -271,9 +271,10 @@ def toggle_all_tasks(
     mark_tasks_as_not_completed_service: MarkTasksAsNotCompletedService = Depends(),
     mark_tasks_as_completed_service: MarkTasksAsCompletedService = Depends(),
 ):
+    """Toggle all tasks' statuses"""
     tasks = get_tasks_service.execute()
-    complete_tasks = [task for task in tasks if task.completed is True]
-    if len(complete_tasks) == len(tasks):
+    completed_tasks = [task for task in tasks if task.completed is True]
+    if len(completed_tasks) == len(tasks):
         mark_tasks_as_not_completed_service.execute()
     else:
         mark_tasks_as_completed_service.execute()
