@@ -19,6 +19,8 @@ To run this project, you will need to have Python and pip installed on your mach
 python3 -m venv .venv
 ```
 
+Install dependencies
+
 ```
 pip install -r requirements.txt
 ```
