@@ -37,6 +37,11 @@ You can then access the application by navigating to <http://localhost:8000> in 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Further improvements
+
+- Add ent-to-end tests with playwright.
+- Refactor and simplify code structure.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
